@@ -1,0 +1,170 @@
+<html>
+    <head>
+        <title>Challenge A</title>
+        <style>
+            @media screen and (max-width: 600px){
+                ul{
+                width: 100%;
+            }
+            
+            }
+
+            body{
+                background-color: #E6E7EA;
+            }
+
+            ul{
+                width: 100%;
+            }
+     
+            ul li {
+                    margin: 5px;
+                    border-bottom: 1px solid #E7E9EB;
+                    display: block;
+                    background-color: #ffffff;
+                    }
+            button{
+                background-color: #6CAF51;
+                border: 1px solid #E7E9EB;
+                color:#fff;
+                padding: 10px;
+                border-radius: 10px;
+            }
+
+           
+
+            #post{
+                width: 50%;
+            }
+
+            #post li{
+                border-radius: 25px 25px 0px 0px;
+                background-color: #ffffff;
+            }
+
+            #title{
+                padding-top: 5px;
+                padding-bottom: 5px;
+                margin-right: 20px;
+                margin-left: 20px;
+                border-bottom:1px solid #E6E7EA;
+            }
+            #body{
+                margin-left: 20px;
+                margin-right: 20px;
+            }
+
+
+            #back{
+                color:#6CAF51;
+                cursor: pointer;
+            }
+
+
+            @media only screen and (max-width: 600px) {
+
+                #post{
+                                width: 100%;
+                                margin: 20px;
+                                padding: 0px;
+                            }
+            }
+
+        </style>
+
+        <script>
+
+
+            // get users
+
+            function getUsers() {
+                document.getElementById("content").innerHTML ="<h1>Loading...<h1>";
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var users=JSON.parse(this.responseText);
+                    var content="";
+                    for (var i = 0; i < users.length; i++){
+                        var id=users[i]['id'];
+                        var name=users[i]['name'];
+                        var email=users[i]['email'];
+                        content+="<li><table width='80%'><tr><td rowspan='4' width='10%'><img src='./images/user.png' width='80px' height='80px'/></td></tr><tr><td width='40%'><b>"+name+"</b></td><td rowspan='3' width='20%'><button onclick='getUserPost("+id+")'>Get User’s Posts</button></td></tr><tr><td width='20%'>"+email+"</td></tr></table></li>";
+                        }
+                document.getElementById("content").innerHTML =content;
+                }
+            };
+            xhttp.open("GET", "https://jsonplaceholder.typicode.com/users", true);
+            xhttp.send();
+            }
+
+            // get user's posts
+
+
+            function getUserPost(id){
+                document.getElementById("post").innerHTML ="<h1>Loading...<h1>";
+                document.getElementById("userContent").style.display = "none";
+                document.getElementById("postContent").style.display = "block";
+                console.log("id",id)
+
+                var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var posts=JSON.parse(this.responseText);
+                    console.log(posts);
+                    var content="";
+                    for (var i = 0; i < posts.length; i++){
+                        var title=posts[i]['title'];
+                        var body=posts[i]['body'];
+                        content+="<li><div><div id='title'><p><h4>"+title+"</h4></p></div><p id='body'>"+body+"</p></div></li>";
+                        }
+                document.getElementById("post").innerHTML =content;
+                }
+            };
+            xhttp.open("GET", "https://jsonplaceholder.typicode.com/posts?userId="+id, true);
+            xhttp.send();
+            }
+
+
+            // go back
+
+            function goBack(){
+                document.getElementById("userContent").style.display = "block";
+                document.getElementById("postContent").style.display = "none";
+
+            }
+            </script>
+    </head>
+    <body onload="getUsers()">
+
+        <center>
+
+            <div>
+                <div id="userContent">
+                <ul id="content">
+                    
+                    
+                  
+                </ul>
+            </div>
+
+
+
+                <div id="postContent">
+
+                    <font id="back" onclick="goBack()">< Back</font>
+                
+                <ul id="post" >
+
+                   
+
+
+                    
+
+                </ul>
+            </div>
+            </div>
+
+        </center>
+
+    </body>
+</html>
